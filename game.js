@@ -7,23 +7,20 @@ const ctx = canvas.getContext('2d');
 const menu = document.getElementById('menu');
 const levelList = document.getElementById('level-list');
 
-// Physics constants
 const GRAVITY_NORMAL = 0.6;
 const GRAVITY_FLIPPED = -0.6;
 const JUMP_FORCE = -12;
 const BASE_SPEED = 7;
 
-// Game state
 let currentLevel = null;
 let cameraX = 0;
 let speedMultiplier = 1.0;
 let gravity = GRAVITY_NORMAL;
-let mode = "cube"; // cube or ship
+let mode = "cube"; // "cube" or "ship"
 
 let gameOver = false;
 let levelComplete = false;
 
-// Player object
 let player = {
   x: 100,
   y: 300,
@@ -37,6 +34,7 @@ let player = {
 //  LEVEL SELECT MENU
 // =========================
 function buildLevelMenu() {
+  levelList.innerHTML = "";
   LEVELS.forEach(level => {
     const btn = document.createElement('button');
     btn.textContent = `${level.id}. ${level.name}`;
@@ -79,7 +77,6 @@ function update() {
   const SPEED = BASE_SPEED * speedMultiplier;
   cameraX += SPEED;
 
-  // Movement based on gamemode
   if (mode === "cube") {
     player.vy += gravity;
     player.y += player.vy;
@@ -135,11 +132,7 @@ function handleObjects() {
     }
 
     if (isColliding(player, hitbox)) {
-      if (obj.type === "block") {
-        gameOver = true;
-      } else {
-        gameOver = true;
-      }
+      gameOver = true;
     }
   }
 
@@ -233,37 +226,33 @@ function shipUpdate() {
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Background
-  ctx.fillStyle = '#111';
+  const bg = currentLevel?.backgroundColor || "#111";
+  ctx.fillStyle = bg;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Ground
   ctx.fillStyle = '#444';
   ctx.fillRect(0, 370, canvas.width, 30);
 
-  // Player
   ctx.fillStyle = (mode === "cube") ? '#0ff' : '#0f0';
   ctx.fillRect(player.x, player.y, player.w, player.h);
 
-  // Objects
-  for (let obj of currentLevel?.objects || []) {
+  if (!currentLevel) return;
+
+  for (let obj of currentLevel.objects) {
     const screenX = obj.x - cameraX;
     if (screenX + obj.w < 0 || screenX > canvas.width) continue;
 
     if (obj.type === "spike") {
       ctx.fillStyle = '#f33';
       ctx.fillRect(screenX, obj.y, obj.w, obj.h);
-
     } else if (obj.type === "saw") {
       ctx.fillStyle = '#ff0';
       ctx.beginPath();
       ctx.arc(screenX + obj.w / 2, obj.y + obj.h / 2, obj.w / 2, 0, Math.PI * 2);
       ctx.fill();
-
     } else if (obj.type === "block") {
       ctx.fillStyle = '#888';
       ctx.fillRect(screenX, obj.y, obj.w, obj.h);
-
     } else if (obj.type === "portal") {
       ctx.fillStyle = '#0f0';
       ctx.fillRect(screenX, obj.y, obj.w, obj.h);
