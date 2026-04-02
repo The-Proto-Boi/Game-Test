@@ -1,12 +1,31 @@
 body {
   margin: 0;
-  background: #111;
-  overflow: hidden;
+  background: #000;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  text-align: center;
+}
+
+#menu {
+  margin-top: 60px;
+}
+
+#level-list button {
+  display: block;
+  margin: 8px auto;
+  padding: 8px 16px;
+  background: #333;
+  color: #fff;
+  border: 1px solid #555;
+  cursor: pointer;
+}
+
+#level-list button:hover {
+  background: #555;
 }
 
 canvas {
   display: block;
   margin: 0 auto;
-  background: #222;
+  background: #111;
 }
-
