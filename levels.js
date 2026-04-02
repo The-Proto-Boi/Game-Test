@@ -1,24 +1,37 @@
-// Example level format (MAKE YOUR OWN LAYOUTS)
+// Types: spike, saw, block, portal
+// Portal subtypes: speed, gravity, mode
+
 const LEVELS = [
   {
-    name: "Level 1",
-    length: 3000, // world length in pixels
-    obstacles: [
-      // type: "spike" or "block" or "platform" etc.
-      { type: "spike", x: 500, y: 340, width: 40, height: 60 },
-      { type: "spike", x: 700, y: 340, width: 40, height: 60 },
-      { type: "block", x: 900, y: 320, width: 80, height: 80 },
-      { type: "spike", x: 1100, y: 340, width: 40, height: 60 },
-      // add more…
+    id: 1,
+    name: "Stereo Start", // make your own names
+    length: 3500,
+    startSpeed: 1.0,
+    objects: [
+      { type: "spike", x: 500, y: 340, w: 40, h: 60 },
+      { type: "saw",   x: 800, y: 330, w: 50, h: 50 },
+
+      // speed portal (faster)
+      { type: "portal", portalType: "speed", factor: 1.3, x: 1000, y: 320, w: 40, h: 80 },
+
+      // gravity portal (flip)
+      { type: "portal", portalType: "gravity", x: 1400, y: 320, w: 40, h: 80 },
+
+      // mode portal (cube -> ship)
+      { type: "portal", portalType: "mode", mode: "ship", x: 1800, y: 320, w: 40, h: 80 },
+
+      // more spikes etc…
     ]
   },
   {
-    name: "Level 2",
+    id: 2,
+    name: "Back on Track-ish",
     length: 4000,
-    obstacles: [
-      { type: "spike", x: 400, y: 340, width: 40, height: 60 },
-      { type: "spike", x: 440, y: 340, width: 40, height: 60 },
-      { type: "block", x: 800, y: 300, width: 120, height: 100 },
+    startSpeed: 1.0,
+    objects: [
+      { type: "spike", x: 400, y: 340, w: 40, h: 60 },
+      { type: "block", x: 700, y: 320, w: 120, h: 80 },
+      { type: "saw",   x: 1000, y: 330, w: 50, h: 50 },
       // etc…
     ]
   }
